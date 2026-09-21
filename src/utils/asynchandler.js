@@ -9,3 +9,5 @@ const asyn_handler = (fn) => async(req,res,next) => {
         })
     }
 }
+
+export {asyn_handler};
