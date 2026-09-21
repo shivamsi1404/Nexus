@@ -8,3 +8,5 @@ class ApiResponse {
 }
 
 export {ApiResponse};
+
+// created this class to handle all the api responses
