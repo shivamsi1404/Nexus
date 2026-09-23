@@ -1,5 +1,5 @@
 // Wrapper for handling async route errors
-const asyn_handler = (fn) => async (req, res, next) => {
+const async_handler = (fn) => async (req, res, next) => {
 
     try {
         // Execute the async function
@@ -16,4 +16,4 @@ const asyn_handler = (fn) => async (req, res, next) => {
 }
 
 // Export the async handler
-export { asyn_handler };
+export { async_handler };
