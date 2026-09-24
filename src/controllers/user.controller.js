@@ -2,7 +2,6 @@ import { async_handler } from "../utils/asynchandler.js";
 import { ApiError } from "../utils/apierror.js";
 import { User } from "../models/user.model.js";
 import { Uploadoncloud } from "../utils/cloudinary.js";
-import { upload } from "../middlewares/multer.middleware.js";
 import { ApiResponse } from "../utils/apiresponse.js";
 
 const registerUser = async_handler(async (req, res) => {
