@@ -54,7 +54,14 @@ const registerUser = async_handler(async (req, res) => {
     // as we added a middlewere before the register user it gives req more functions to perform 
 
     const avatarlocalpath = req.files?.avatar[0]?.path;
-    const coverimagelocalpath = req.files?.coverimage[0]?.path;
+    //const coverimagelocalpath = req.files?.coverimage[0]?.path; // this cannot handle the case if the cover image remains empty 
+
+    let coverimagelocalpath;
+
+    if ( req.files && Array.isArray(req.files.coverimage) && req.files.coverimage.length > 0)
+    {
+        coverimagelocalpath = req.files.coverimage[0].path
+    }
 
     // validation 
 
