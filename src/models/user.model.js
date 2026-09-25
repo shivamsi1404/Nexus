@@ -56,7 +56,6 @@ const UserSchema = new Schema({
 UserSchema.pre("save", async function(next) {
     if (!this.isModified("password")) return next(); // if modified then change the password it not modified then simply run the next fn 
     this.password = await bcrypt.hash(this.password,10);
-    next()
 });
 
 // use bcrypt to de encrypt the password and match it with the one user entered  

@@ -7,8 +7,9 @@ const async_handler = (fn) => async (req, res, next) => {
 
     } catch (error) {
 
+        console.log(error);
         // Send error response
-        res.status(error.code || 500).json({
+        res.status(error.statuscode || 500).json({
             success: false,
             massage: error.massage
         });

@@ -40,9 +40,11 @@ const registerUser = async_handler(async (req, res) => {
 
     // we imported user from the usermodel it has the ability directly call the mongoDB 
 
-    const existeduser = User.findOne({
+    const existeduser = await User.findOne({
         $or: [{username},{email}]
     });
+
+    console.log(existeduser);
 
     if (existeduser)
     {
@@ -71,12 +73,14 @@ const registerUser = async_handler(async (req, res) => {
         throw new ApiError(409, "Avatar file is required")
     }
 
+    console.log(req.body)
+
     // storing on database 
 
     const Userdb = await User.create({
         fullname,
         avatar : avatar.url,
-        coverimage : coverimage?.url || "",
+        coverimage : cover?.url || "",
         email,
         password,
         username: username.toLowerCase()
