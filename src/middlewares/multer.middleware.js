@@ -13,3 +13,5 @@ const storage = multer.diskStorage({
 export const upload = multer({ 
     storage, 
 })
+
+// it was the default syntax which wa used to upload file from the front end to then local storage 
