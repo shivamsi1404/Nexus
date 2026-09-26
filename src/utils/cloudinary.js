@@ -9,7 +9,7 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// 
+// Upload on cloudinary 
 
 const Uploadoncloud = async (localfilepath) => {
     try {
@@ -20,16 +20,17 @@ const Uploadoncloud = async (localfilepath) => {
             // unpload the locally saved file to the cloud and get its URL 
 
             const response = await cloudinary.uploader.upload(localfilepath, {
-                resource_type: "auto"
+                resource_type: "auto" // auto recognises images videos and URL 
             });
 
             console.log("file uploaded on cloud", response.url);
+            // Check whether the local file still exists
             if (fs.existsSync(localfilepath)) {
                 fs.unlinkSync(localfilepath);
             }
             return response;
         }
-
+    // if cloudinary connection fails 
     } catch (error) {
         console.log("Cloudinary error:", error);
 
