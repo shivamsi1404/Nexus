@@ -192,7 +192,35 @@ const loginuser = async_handler(async (req,res) => {
     )
 })
 
+const logoutuser = async_handler(async(req,res) => {
+    // clear cookies 
+    // and clear the refresh token from the user model saved in the dataabase 
+    // we can get req user from the middlewere we inejcted in the route 
 
+    User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $set:{
+                refreshtokens: undefined
+            }
+            
+        },
+        {
+            new: true
+        }
+    )
+const option = {
+        httpOnly: true,
+        secure: true
+    }
+
+    return res.status(200)
+    .clearCookie("accesstoken",option)
+    .clearCookie("refreshtoken",option).json(
+        200,{},"user loggged out"
+    )
+
+})
 
 export { registerUser, 
     loginuser,logoutuser
