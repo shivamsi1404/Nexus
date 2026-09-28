@@ -164,6 +164,9 @@ const loginuser = async_handler(async (req, res) => {
     // password check 
     const passwordcheck = await finduser.isPasswordcorrect(password);
 
+
+    console.log(passwordcheck)
+
     if (!passwordcheck) {
         throw new ApiError(401, "incorrect password");
     }
@@ -217,9 +220,14 @@ const logoutuser = async_handler(async (req, res) => {
     return res.status(200)
         .clearCookie("accesstoken", option)
         .clearCookie("refreshtoken", option).json(
-            200, {}, "user loggged out"
+            new ApiResponse(
+                200,
+                {},
+                "user logged out"
+            )
         )
 
+    
 })
 
 export {
