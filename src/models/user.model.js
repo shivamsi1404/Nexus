@@ -53,8 +53,10 @@ const UserSchema = new Schema({
 
 // to handle unrequired password encryption we use if to handle that situation 
 
+// this next function is generating error 
+
 UserSchema.pre("save", async function(next) {
-    if (!this.isModified("password")) return next(); // if modified then change the password it not modified then simply run the next fn 
+    if (!this.isModified("password")) //  return next(); // if modified then change the password it not modified then simply run the next fn 
     this.password = await bcrypt.hash(this.password,10);
 });
 
