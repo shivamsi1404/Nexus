@@ -54,6 +54,7 @@ const UserSchema = new Schema({
 // to handle unrequired password encryption we use if to handle that situation 
 
 // this next function is generating error 
+// reason - if you're using Mongoose 9, this is exactly where your TypeError comes from. In Mongoose 9, pre middleware no longer receives next(). You should use the promise returned by the async function instead.
 
 UserSchema.pre("save", async function(next) {
     if (!this.isModified("password")) return; // if modified then change the password it not modified then simply run the next fn 

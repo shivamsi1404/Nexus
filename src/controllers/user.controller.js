@@ -231,7 +231,7 @@ const logoutuser = async_handler(async (req, res) => {
     
 })
 
-const refresAccessToken = async_handler(async(req,res) =>{
+const refresAccessToken = async_handler(async(req,res) => {
     // When the access token expires, we can generate a new access token by validating the refresh token from the cookie against the refresh token stored in the database.  
 
     // ask for the refresh token from the cookies 
@@ -282,6 +282,34 @@ const refresAccessToken = async_handler(async(req,res) =>{
     } catch (error) {
         throw new ApiError(403,error?.message||"invalid refresh token")
     }
+})
+
+const changePassword = async_handler(async(req,res) => {
+    // take these feilds from the user side 
+    const {oldpassword,newpassword} = req.body;
+
+    // now as user is logged in the middlewere auth is active so we can get req.user 
+    const user = await User.findById(req.user?.id)
+
+    // check for the old password
+    const passwordvalidation = await user.isPasswordcorrect(oldpassword);
+
+    if (!passwordvalidation)
+    {
+        throw new ApiError(404,"incorrect password")
+    }
+
+    // set the new password 
+    user.password = newpassword;
+
+    // save on the databases 
+    await user.save({validateBeforeSave:false});
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,{},"password changed successfully"
+        )
+    )
 })
 
 export {
