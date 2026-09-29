@@ -289,7 +289,7 @@ const changePassword = async_handler(async(req,res) => {
     const {oldpassword,newpassword} = req.body;
 
     // now as user is logged in the middlewere auth is active so we can get req.user 
-    const user = await User.findById(req.user?.id)
+    const user = await User.findById(req.user?._id)
 
     // check for the old password
     const passwordvalidation = await user.isPasswordcorrect(oldpassword);
@@ -320,9 +320,107 @@ const getcurrentuser = async_handler(async(req,res) => {
     )
 })
 
+const updateaccountdetails = async_handler(async(req,res) => {
+    const {fullname,email} = req.body;
+
+    if (!fullname || !email)
+    {
+        throw new ApiError(407,"enter the empty fields")
+    }
+
+    // find the user 
+    const user = User.findByIdAndUpdate(req.user?._id,
+        {
+            $set:
+            {
+                fullname,
+                email
+            }
+        },
+        {
+            new: true
+        }
+    ).select("-password"); // get the new user without password 
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,user,
+            "details updates"
+        )
+    )
+})
+
+const updateuseravatar = async_handler(async(req,res) => {
+    // storing the new avatar file on the local device
+    const avatarlocal = req.file?.path;
+
+    if (!avatarlocal)
+    {
+        throw new ApiError(409,"uplaod avatar image")
+    }
+    // uploading on the cloud it will return the object uploaded on cloud 
+    const avatar = await Uploadoncloud(avatarlocal)
+
+    if (!avatar.url)
+    {
+        throw new ApiError(410,"error while uploading new avatar on cloud")
+    }
+
+    const updateduser = await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $set: {
+                avatar : avatar.url
+            }
+        },{
+            new : true
+        }
+    ).select("-password")
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,updateduser,"avatar updated"
+        )
+    )
+})
+
+const updateusercover = async_handler(async(req,res) => {
+    // storing the new avatar file on the local device
+    const coverlocal = req.file?.path;
+
+    if (!coverlocal)
+    {
+        throw new ApiError(409,"uplaod cover image")
+    }
+    // uploading on the cloud it will return the object uploaded on cloud 
+    const cover = await Uploadoncloud(coverlocal)
+
+    if (!cover.url)
+    {
+        throw new ApiError(410,"error while uploading new avatar on cloud")
+    }
+
+    const updateduser = await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $set: {
+                coverimage : cover.url
+            }
+        },{
+            new : true
+        }
+    ).select("-password")
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,updateduser,"avatar updated"
+        )
+    )
+})
 
 export {
     registerUser,
     loginuser, logoutuser,
     refresAccessToken, changePassword, getcurrentuser
+    , updateaccountdetails , updateuseravatar, updateusercover
 };
