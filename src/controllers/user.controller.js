@@ -328,8 +328,8 @@ const updateaccountdetails = async_handler(async(req,res) => {
         throw new ApiError(407,"enter the empty fields")
     }
 
-    // find the user 
-    const user = User.findByIdAndUpdate(req.user?._id,
+    // find the user ( always use await while using database)
+    const user =  await User.findByIdAndUpdate(req.user?._id,
         {
             $set:
             {
