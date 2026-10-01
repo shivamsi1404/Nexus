@@ -492,8 +492,45 @@ const getwatchhistory = async_handler(async (req,res) => {
             $match: {
                 _id: new mongoose.Types.ObjectId(req.user._id) // aggregate cant directly get the object id from mongoDB we would manually add mongoose to get the id 
             }
+        },
+        {
+            $lookup: {
+                from: "videos",
+                localField: "watchhistory",
+                foreignField: "_id",
+                as: "watchhistoy",
+                pipeline:[
+                    {
+                        $lookup: {
+                            from:"users",
+                            localField: "owner",
+                            foreignField: "._id",
+                            as: "owner",
+                            pipeline: [
+                                {
+                                    username: 1,
+                                    fullname: 1,
+                                    avatar: 1
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        $addFields: {
+                            owner: {
+                                $first: "#owner"   
+                            }
+                        }
+                    }
+                ]
+            }
         }
     ])
+
+    return res.status(200)
+    .json(new ApiResponse(
+        200,user[0].watchhistory,"Watch history fetched"
+    ))
 })
 
 export {
