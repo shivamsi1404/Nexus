@@ -484,12 +484,22 @@ const getuserchannelprofile = async_handler(async (req, res) => {
 
 })
 
+const getwatchhistory = async_handler(async (req,res) => {
+    // Note normally req,user._id return just the string part of the object id not the complete mongodb id but mongoose behind the scene helps you to get the entire mongoDB id 
 
+    const user = await User.aggregate([
+        {
+            $match: {
+                _id: new mongoose.Types.ObjectId(req.user._id) // aggregate cant directly get the object id from mongoDB we would manually add mongoose to get the id 
+            }
+        }
+    ])
+})
 
 export {
     registerUser,
     loginuser, logoutuser,
     refresAccessToken, changePassword, getcurrentuser,
     updateaccountdetails, updateuseravatar, updateusercover,
-    getuserchannelprofile
+    getuserchannelprofile, getwatchhistory
 };
