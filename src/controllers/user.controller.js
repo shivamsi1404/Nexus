@@ -542,14 +542,4 @@ export {
     getuserchannelprofile, getwatchhistory
 };
 
-/*
-tested controllers : 
-
-login - success
-logout - success 
-watchhistory - success
-userchannelprofile - success
-currentuser - success
-passwordchange - success
-refreshtoken - success
-*/
+// all test completed
