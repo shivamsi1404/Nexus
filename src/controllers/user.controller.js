@@ -548,4 +548,7 @@ tested controllers :
 login - success
 logout - success 
 watchhistory - success
+userchannelprofile - success
+currentuser - success
+passwordchange - success
 */
