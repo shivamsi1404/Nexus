@@ -3,6 +3,7 @@ import { ApiError } from "../utils/apierror.js";
 import { User } from "../models/user.model.js";
 import { Uploadoncloud } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/apiresponse.js";
+import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 
 // method to create refresh and access token 
@@ -498,27 +499,27 @@ const getwatchhistory = async_handler(async (req,res) => {
                 from: "videos",
                 localField: "watchhistory",
                 foreignField: "_id",
-                as: "watchhistoy",
+                as: "watchhistory",
                 pipeline:[
                     {
                         $lookup: {
                             from:"users",
                             localField: "owner",
-                            foreignField: "._id",
+                            foreignField: "_id",
                             as: "owner",
                             pipeline: [
-                                {
+                                {$project : {
                                     username: 1,
                                     fullname: 1,
                                     avatar: 1
-                                }
+                                }}
                             ]
                         }
                     },
                     {
                         $addFields: {
                             owner: {
-                                $first: "#owner"   
+                                $first: "$owner"   
                             }
                         }
                     }
@@ -540,3 +541,11 @@ export {
     updateaccountdetails, updateuseravatar, updateusercover,
     getuserchannelprofile, getwatchhistory
 };
+
+/*
+tested controllers : 
+
+login - success
+logout - success 
+watchhistory - success
+*/
