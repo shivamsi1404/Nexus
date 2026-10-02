@@ -201,11 +201,11 @@ const logoutuser = async_handler(async (req, res) => {
     // and clear the refresh token from the user model saved in the dataabase 
     // we can get req user from the middlewere we inejcted in the route 
 
-    User.findByIdAndUpdate(
+    await User.findByIdAndUpdate(
         req.user._id,
         {
-            $set: {
-                refreshtokens: undefined
+            $unset: {
+                refreshtokens: 1 // set undefined is not a subtle perfect response , 1 removes the field completely  
             }
 
         },
