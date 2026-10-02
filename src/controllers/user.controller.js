@@ -236,7 +236,7 @@ const refresAccessToken = async_handler(async (req, res) => {
     // When the access token expires, we can generate a new access token by validating the refresh token from the cookie against the refresh token stored in the database.  
 
     // ask for the refresh token from the cookies 
-    const incomingrefreshtoken = req.cookie.refreshtoken || req.body.refreshtoken
+    const incomingrefreshtoken = req.cookies.refreshtoken || req.body.refreshtoken
 
     if (!incomingrefreshtoken) {
         throw new ApiError(401, "unauthorized request")
@@ -551,4 +551,5 @@ watchhistory - success
 userchannelprofile - success
 currentuser - success
 passwordchange - success
+refreshtoken - success
 */
