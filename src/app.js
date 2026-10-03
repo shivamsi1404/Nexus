@@ -20,9 +20,11 @@ app.use(cookieParser()); // This allows you to read cookies through: req.cookies
 // routes import
 
 import userRouter from './routes/user.routes.js'
+import videoRouter from './routes/videos.routes.js'
 
 // routes declaration
 
 app.use("/api/v1/users",userRouter)
+app.use("/api/v1/videos", videoRouter);
 
 export {app};

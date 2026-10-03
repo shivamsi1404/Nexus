@@ -2,7 +2,6 @@ import { Router } from "express";
 import { loginuser, logoutuser, registerUser,refresAccessToken, changePassword, getcurrentuser, updateaccountdetails, updateuseravatar, updateusercover, getuserchannelprofile, getwatchhistory } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
-import multer from "multer";
 
 // we created the user route with express router 
 
