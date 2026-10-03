@@ -103,8 +103,6 @@ const registerUser = async_handler(async (req, res) => {
         throw new ApiError(409, "Avatar file is required")
     }
 
-    console.log(req.body)
-
     // storing on database 
 
     const Userdb = await User.create({
