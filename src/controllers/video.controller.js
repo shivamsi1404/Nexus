@@ -66,4 +66,28 @@ const uploadvideo = async_handler(async(req,res) => {
 
 })
 
+const getvideobyid = async_handler(async(req,res)=>{
+    // control flow 
+    // get the id from the user 
+    // use that id to run databse call
+    // then we can call the databse from that id
+
+    const {videoid} = req.params;
+
+    const getvideo = await video.findById(videoid);
+
+    if(!getvideo)
+    {
+        throw new ApiError(404,"video not available")
+    }
+
+    return res.status(200)
+    .json(
+        new ApiResponse(
+            200,getvideo,"video fetched"
+        )
+    )
+
+})
+
 export {uploadvideo}
