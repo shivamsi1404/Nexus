@@ -1,7 +1,7 @@
 import { ApiError } from "../utils/apierror.js";
 import { async_handler } from "../utils/asynchandler.js";
 import { Uploadoncloud } from "../utils/cloudinary.js";
-import { video, video } from "../models/video.model.js";
+import { video } from "../models/video.model.js";
 import { ApiResponse } from "../utils/apiresponse.js";
 
 const uploadvideo = async_handler(async (req, res) => {
@@ -187,9 +187,50 @@ const deletevideo = async_handler(async(req,res) => {
     )
 }) 
 
+const publicstatus = async_handler(async(req,res) => {
+    // control flow 
+    // get the required status from the user 
+    // get the video through its id 
+    // call out the database and edit the ispublic status 
+
+    const {videoid} = req.params;
+
+    if (!videoid)
+    {
+        throw new ApiError(400,"video id not found")
+    }
+
+    const {isPublicStatus} = req.body;
+
+    if (typeof isPublicStatus !== "boolean")
+    {
+        throw new ApiError(400,"enter valid video status")
+    }
+
+    const Video = await video.findByIdAndUpdate(videoid,{
+        $set:{
+            isPublic : isPublicStatus
+        }
+    })
+
+    if (!Video) 
+    {
+        throw new (400,"Video not available")
+    }
+
+    return res.status(200)
+    .json(
+        new ApiResponse(
+            200,Video,"Video status updated"
+        )
+    )
+    
+})
+
 export {
     uploadvideo,
     getvideobyid, updatevideodetails,
     updatethumbnail,
-    deletevideo
+    deletevideo,
+    publicstatus
 }
