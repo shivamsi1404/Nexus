@@ -69,9 +69,8 @@ const getvideobyid = async_handler(async (req, res) => {
 
     const { videoid } = req.params;
 
-    if (!videoid)
-    {
-        throw new ApiError(400,"video id not found")
+    if (!videoid) {
+        throw new ApiError(400, "video id not found")
     }
 
     const getvideo = await video.findById(videoid);
@@ -96,9 +95,8 @@ const updatevideodetails = async_handler(async (req, res) => {
     // call the database and update the details 
     const { videoid } = req.params;
 
-    if (!videoid)
-    {
-        throw new ApiError(400,"video id not found")
+    if (!videoid) {
+        throw new ApiError(400, "video id not found")
     }
 
     const { newtitle, newdescription } = req.body;
@@ -135,9 +133,8 @@ const updatethumbnail = async_handler(async (req, res) => {
 
     const { videoid } = req.params;
 
-    if (!videoid)
-    {
-        throw new ApiError(400,"video id not found")
+    if (!videoid) {
+        throw new ApiError(400, "video id not found")
     }
 
     const newthumbnailpath = req.file?.path
@@ -168,69 +165,106 @@ const updatethumbnail = async_handler(async (req, res) => {
     )
 })
 
-const deletevideo = async_handler(async(req,res) => {
+const deletevideo = async_handler(async (req, res) => {
     // control flow 
     // get the video from id 
     // wipe it from the database 
 
-    const {videoid} = req.params
+    const { videoid } = req.params
 
-    if (!videoid)
-    {
-        throw new ApiError(400,"video id not found")
+    if (!videoid) {
+        throw new ApiError(400, "video id not found")
     }
 
     const videotobedeleted = await video.findByIdAndDelete(videoid)
 
     return res.status(200).json(
-        new ApiResponse(200,videotobedeleted,"video deleted successfully")
+        new ApiResponse(200, videotobedeleted, "video deleted successfully")
     )
-}) 
+})
 
-const publicstatus = async_handler(async(req,res) => {
+const publicstatus = async_handler(async (req, res) => {
     // control flow 
     // get the required status from the user 
     // get the video through its id 
     // call out the database and edit the ispublic status 
 
-    const {videoid} = req.params;
+    const { videoid } = req.params;
 
-    if (!videoid)
-    {
-        throw new ApiError(400,"video id not found")
+    if (!videoid) {
+        throw new ApiError(400, "video id not found")
     }
 
-    const {isPublicStatus} = req.body;
+    const { isPublicStatus } = req.body;
 
-    if (typeof isPublicStatus !== "boolean")
-    {
-        throw new ApiError(400,"enter valid video status")
+    if (typeof isPublicStatus !== "boolean") {
+        throw new ApiError(400, "enter valid video status")
     }
 
-    const Video = await video.findByIdAndUpdate(videoid,{
-        $set:{
-            isPublic : isPublicStatus
+    const Video = await video.findByIdAndUpdate(videoid, {
+        $set: {
+            isPublic: isPublicStatus
         }
     })
 
-    if (!Video) 
-    {
-        throw new (400,"Video not available")
+    if (!Video) {
+        throw new (400, "Video not available")
     }
 
     return res.status(200)
-    .json(
-        new ApiResponse(
-            200,Video,"Video status updated"
+        .json(
+            new ApiResponse(
+                200, Video, "Video status updated"
+            )
         )
-    )
-    
+
 })
+
+const getallvideos = async_handler(async (req, res) => {
+    // get the request 
+    const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query;
+
+    // control flow 
+    // create a mongodb filter 
+
+    const filter = { isPublic: true };
+
+    // sort the query 
+
+    // case insensitivity and removal of non required charectors 
+    if (query) {
+        const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        filter.title = { $regex: escaped, $options: "i" };
+    }
+
+    // getting the owner
+    if (userId && mongoose.isValidObjectId(userId)) {
+        filter.owner = userId;
+    }
+
+    // now filter is and object that conntain the case removed query the name of the owner and wheather video is published or not 
+
+    // from the request we weill recieve wheather we need the result ascending or descending so we need to hold that in a variable 
+    const sortorder = sortType === "asc"? 1 : -1 ;
+
+    // now we can if any such video document is available or not 
+    const videos = await video.find(filter)
+        .sort({ [sortBy]: sortorder}) // In MongoDB, 1 means ascending and -1 means descending.If sortType is "asc" it gives 1, otherwise -1.
+        .skip((page - 1) * limit)
+        .limit(limit)
+    // skip and limit do the pagination. For page 3 with limit 10, it skips (3-1) × 10 = 20 documents and returns the next 10.
+
+    return res.status(200).json(
+        new ApiResponse(200, { videos }, "Videos fetched successfully")
+    );
+})
+
 
 export {
     uploadvideo,
     getvideobyid, updatevideodetails,
     updatethumbnail,
     deletevideo,
-    publicstatus
+    publicstatus,
+    getallvideos
 }
