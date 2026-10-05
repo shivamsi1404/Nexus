@@ -262,7 +262,6 @@ const getallvideos = async_handler(async (req, res) => {
     );
 })
 
-
 export {
     uploadvideo,
     getvideobyid, updatevideodetails,
