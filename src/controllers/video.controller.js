@@ -254,8 +254,11 @@ const getallvideos = async_handler(async (req, res) => {
         .limit(limit)
     // skip and limit do the pagination. For page 3 with limit 10, it skips (3-1) × 10 = 20 documents and returns the next 10.
 
+    // count the total documents 
+    const total = await video.countDocuments(filter);
+
     return res.status(200).json(
-        new ApiResponse(200, { videos }, "Videos fetched successfully")
+        new ApiResponse(200, { videos , total }, "Videos fetched successfully")
     );
 })
 
