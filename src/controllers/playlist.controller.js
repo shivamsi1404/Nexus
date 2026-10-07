@@ -28,6 +28,3 @@ const removevideofromplaylist = async_handler(async(req,res) => {
 
 })
 
-export {createplaylist,deleteplaylist,updateplaylist,getallplaylistpfuser
-    ,getallplaylistofuser,playlistbyid,addvideotoplaylist,removevideofromplaylist
-}
