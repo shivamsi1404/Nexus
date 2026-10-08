@@ -110,6 +110,31 @@ const updateplaylist = async_handler(async (req, res) => {
 })
 
 const getallplaylistofuser = async_handler(async (req, res) => {
+    // control flow 
+    // use the user id from the request 
+    // then use that and find function to get all the playlist 
+
+    const {userid} = req.params
+
+    if (!userid)
+    {
+        throw ApiError(404,"user not found")
+    }
+
+    const listplaylist = await Playlist.find({
+        owner : userid
+    })
+
+    if (listplaylist === 0)
+    {
+        throw ApiError(404,"user has no playlist")
+    }
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,listplaylistplaylist,"playlist updated"
+        )
+    )
 
 })
 
@@ -216,3 +241,4 @@ const removevideofromplaylist = async_handler(async (req, res) => {
     
 })
 
+export {createplaylist,deleteplaylist,updateplaylist,getallplaylistofuser,playlistbyid,addvideotoplaylist,removevideofromplaylist}
