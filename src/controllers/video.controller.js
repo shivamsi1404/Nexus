@@ -64,8 +64,8 @@ const uploadvideo = async_handler(async (req, res) => {
 const getvideobyid = async_handler(async (req, res) => {
     // control flow 
     // get the id from the user 
-    // use that id to run databse call
-    // then we can call the databse from that id
+    // use that id to run database call
+    // then we can call the database from that id
 
     const { videoid } = req.params;
 

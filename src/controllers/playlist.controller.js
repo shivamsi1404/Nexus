@@ -114,6 +114,31 @@ const getallplaylistofuser = async_handler(async (req, res) => {
 })
 
 const playlistbyid = async_handler(async (req, res) => {
+    
+    // control flow 
+    // get the id from the user 
+    // use that id to run databse call
+    // then we can call the databse from that id
+
+    const { playlistid } = req.params;
+
+    if (!playlistid) {
+        throw new ApiError(400, "playlist id not found")
+    }
+
+    const getplaylist = await Playlist.findById(playlistid);
+
+    if (!getplaylist) {
+        throw new ApiError(404, "playlist not available")
+    }
+
+    return res.status(200)
+        .json(
+            new ApiResponse(
+                200, getplaylist, "playlist fetched"
+            )
+        )
+
 
 })
 
