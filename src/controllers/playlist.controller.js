@@ -114,7 +114,7 @@ const getallplaylistofuser = async_handler(async (req, res) => {
 })
 
 const playlistbyid = async_handler(async (req, res) => {
-    
+
     // control flow 
     // get the id from the user 
     // use that id to run databse call
@@ -144,9 +144,75 @@ const playlistbyid = async_handler(async (req, res) => {
 
 const addvideotoplaylist = async_handler(async (req, res) => {
 
+    
+    // control flow 
+    // get the videoid and playlistid from the user req 
+    // get the playlist using the id 
+    // then add the video in the array of playlist add a check if that video already exist 
+
+    const {playlistid , videoid} = req.params 
+
+    if (!playlistid || !videoid)
+    {
+        throw ApiError(400,"invalid request")
+    }
+
+    const playlist = await Playlist.findById(playlistid);
+
+    if (!playlist)
+    {
+        throw ApiError(400,"playlist doesnt exist")
+    }
+
+    if (playlist.videos.some(id => id.toString() === videoid)) {
+    throw new ApiError(400, "video already exists in playlist");
+    }
+    else{
+        playlist.videos.push(videoid);
+
+        await playlist.save();
+    }
+
+    return res.status(200)
+    .json(
+        new ApiResponse(
+            200,playlist,"video addded to the playlist"
+        )
+    )
 })
 
 const removevideofromplaylist = async_handler(async (req, res) => {
+    // control flow 
+    // get the video and playlist by their ids from the request 
 
+    const {playlistid , videoid} = req.params 
+
+    if (!playlistid || !videoid)
+    {
+        throw ApiError(400,"invalid request")
+    }
+
+    const playlist = await Playlist.findById(playlistid);
+
+    if (playlist.videos.some(id => id.toString() === videoid))
+    {
+        playlist.videos = playlist.videos.filter(
+        id => id.toString() !== videoid
+        );
+
+        await playlist.save();
+    }
+    else 
+    {
+        throw ApiError(400,"video not found")
+    }
+
+    return res.status(200)
+    .json(
+        new ApiResponse(
+            200,playlist,"video addded to the playlist"
+        )
+    )
+    
 })
 
