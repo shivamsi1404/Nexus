@@ -65,7 +65,48 @@ const deleteplaylist = async_handler(async (req, res) => {
 })
 
 const updateplaylist = async_handler(async (req, res) => {
+    // control flow 
+    // get the new title and description from the user and update them in the database 
+    // to update any of them available we will create an empty object and update those parameters there 
 
+    const {playlistid} = req.params;
+    const {title,description} = req.body
+
+    if (!playlistid)
+    {
+        throw ApiError (400,"no valid playlist")
+    }
+
+    if (!(title || description))
+    {
+        throw ApiError (400,"empty fields")
+    }
+
+    const updateobject = {}
+
+    if (title) 
+    {
+        updateobject.title = title;
+    }
+
+    if (description) 
+    {
+        updateobject.description = description;
+    }
+
+
+    const playlist = await Playlist.findByIdAndUpdate(playlistid,updateobject,{new : true})
+
+    if (!playlist)
+    {
+        throw new ApiError(404,"no update made")
+    }
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,playlist,"playlist updated"
+        )
+    )
 })
 
 const getallplaylistofuser = async_handler(async (req, res) => {
