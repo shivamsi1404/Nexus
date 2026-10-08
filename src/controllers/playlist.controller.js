@@ -38,6 +38,30 @@ const createplaylist = async_handler(async (req, res) => {
 
 const deleteplaylist = async_handler(async (req, res) => {
 
+    // controll flow 
+    // get the playlist id from req.params 
+    // use that id to get the playlist from database and delete it 
+    
+    const {playlistid} = req.params;
+
+    if (!playlistid)
+    {
+        throw ApiError (400,"no valid playlist")
+    }
+
+    const playlisttobedeleted = await Playlist.findOneAndDelete({
+        _id: playlistid,
+        owner: req.user._id
+    });
+
+    if(!playlisttobedeleted)
+    {
+        throw ApiError (404,"no valid playlist or you are not the owner")
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200, playlisttobedeleted, "playlist deleted successfully")
+    )
 })
 
 const updateplaylist = async_handler(async (req, res) => {
