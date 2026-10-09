@@ -125,7 +125,7 @@ const getallplaylistofuser = async_handler(async (req, res) => {
         owner : userid
     })
 
-    if (listplaylist === 0)
+    if (listplaylist.length === 0)
     {
         throw ApiError(404,"user has no playlist")
     }
