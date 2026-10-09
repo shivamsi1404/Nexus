@@ -25,3 +25,44 @@ const createtweet = async_handler(async(req,res) => {
         new ApiResponse(200,tweet,"tweet created")
     )
 })
+
+const updatetweet = async_handler(async(req,res) => {
+    // control flow 
+    // get the new content from the user request 
+    // get the tweet from the user params 
+    // check for the error handling 
+    // find and update 
+    // return the response 
+
+    const { content } = req.body;
+    const { tweetid } = req.params;
+
+    if (!content || !content.trim()) {
+        throw ApiError(400, "Tweet content is required");
+    }
+
+    const tweet = await Tweet.findOneAndUpdate(
+        {
+            _id: tweetid,
+            owner: req.user._id // handling the owner 
+        },
+        {
+            $set: {
+                content: content.trim()
+            }
+        },
+        {
+            new: true,
+            runValidators: true
+        }
+    );
+
+    if (!tweet) {
+        throw ApiError(404, "Tweet not found or unauthorized");
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200, tweet, "Tweet updated successfully")
+    );
+
+})
