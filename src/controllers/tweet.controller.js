@@ -66,3 +66,29 @@ const updatetweet = async_handler(async(req,res) => {
     );
 
 })
+
+const deletetweet = async_handler(async(req,res) =>{
+    // control flow 
+    // get the tweet id 
+    // find and delete 
+// Get the tweet ID
+    const { tweetid } = req.params;
+
+    if (!tweetid) {
+        throw ApiError(400, "Tweet ID is required");
+    }
+
+    // Find and delete the tweet belonging to the authenticated user
+    const tweet = await Tweet.findOneAndDelete({
+        _id: tweetid,
+        owner: req.user._id
+    });
+
+    if (!tweet) {
+        throw ApiError(404, "Tweet not found or unauthorized");
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200, tweet, "Tweet deleted successfully")
+    );
+})
