@@ -112,8 +112,7 @@ const toggletweetlike = async_handler(async (req, res) => {
 });
 
 export {
-    toggleCommentLike,
-    toggleTweetLike,
     toggleVideoLike,
-    getLikedVideos
+    togglecommentlike,
+    toggletweetlike
 }
