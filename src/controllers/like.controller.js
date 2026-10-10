@@ -45,21 +45,71 @@ const toggleVideoLike = async_handler(async (req, res) => {
         .json(new ApiResponse(201, like, "Video liked successfully"));
 })
 
-const toggleCommentLike = async_handler(async (req, res) => {
-    const {commentId} = req.params
-    
+const togglecommentlike = async_handler(async (req, res) => {
 
-})
+    const { commentid } = req.params;
+    const userid = req.user._id;
 
-const toggleTweetLike = async_handler(async (req, res) => {
-    const {tweetId} = req.params
-    t
-}
-)
+    if (!commentid) {
+        throw new ApiError(400, "Comment ID is required");
+    }
 
-const getLikedVideos = async_handler(async (req, res) => {
-    
-})
+    const existinglike = await Like.findOne({
+        comment: commentid,
+        likedBy: userid
+    });
+
+    if (existinglike) {
+
+        await Like.findByIdAndDelete(existinglike._id);
+
+        return res
+            .status(200)
+            .json(new ApiResponse(200, {}, "Comment unliked successfully"));
+    }
+
+    const like = await Like.create({
+        comment: commentid,
+        likedBy: userid
+    });
+
+    return res
+        .status(201)
+        .json(new ApiResponse(201, like, "Comment liked successfully"));
+});
+
+const toggletweetlike = async_handler(async (req, res) => {
+
+    const { tweetid } = req.params;
+    const userid = req.user._id;
+
+    if (!tweetid) {
+        throw new ApiError(400, "Tweet ID is required");
+    }
+
+    const existinglike = await Like.findOne({
+        tweet: tweetid,
+        likedBy: userid
+    });
+
+    if (existinglike) {
+
+        await Like.findByIdAndDelete(existinglike._id);
+
+        return res
+            .status(200)
+            .json(new ApiResponse(200, {}, "Tweet unliked successfully"));
+    }
+
+    const like = await Like.create({
+        tweet: tweetid,
+        likedBy: userid
+    });
+
+    return res
+        .status(201)
+        .json(new ApiResponse(201, like, "Tweet liked successfully"));
+});
 
 export {
     toggleCommentLike,
