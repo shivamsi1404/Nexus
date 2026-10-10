@@ -111,8 +111,50 @@ const toggletweetlike = async_handler(async (req, res) => {
         .json(new ApiResponse(201, like, "Tweet liked successfully"));
 });
 
+const getalllikedvideo = async_handler(async (req,res) => {
+    // note we cant use find 
+    /* 
+    const likedVideos = await Like.find({
+    likedBy: req.user._id,
+    video: { $exists: true }
+    });
+    
+    this code would give us the video id of all the videos liked by the users but not the actual video so here we use aggregate pipeline 
+    */
+
+    const likedvideo = await Like.aggregate([
+        {
+            $match:{
+                likedBy : req.user._id
+            }
+            //This code filters the Like collection to retrieve all like documents where likedBy matches the logged-in user's ID (req.user._id).
+        },
+        {
+            $lookup:{
+                from: "videos",
+                localField: "video",
+                foreignField: "_id",
+                as: "videolikedbyuser"
+            }
+        }
+    ])
+
+    if (likedvideo.length === 0)
+    {
+        throw ApiError(400,"no video liked by user")
+    }
+
+    return res.status(200)
+    .json(
+        new ApiResponse(
+            200,likedvideo,"videos liked by user fetched"
+        )
+    )
+})
+
 export {
     toggleVideoLike,
     togglecommentlike,
-    toggletweetlike
+    toggletweetlike,
+    getalllikedvideo
 }
