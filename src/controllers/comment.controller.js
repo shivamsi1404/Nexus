@@ -85,3 +85,42 @@ const updatecomment = async_handler(async (req, res) => {
         .status(200)
         .json(new ApiResponse(200, comment, "Comment updated successfully"));
 });
+
+const deletecomment = async_handler(async (req, res) => {
+
+    const { commentid } = req.params;
+
+    if (!commentid) {
+        throw new ApiError(400, "Comment ID is required");
+    }
+
+    const comment = await Comment.findOneAndDelete({
+        _id: commentid,
+        owner: req.user._id
+    });
+
+    if (!comment) {
+        throw new ApiError(404, "Comment not found");
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, comment, "Comment deleted successfully"));
+});
+
+const getusercomments = async_handler(async (req, res) => {
+
+    const { userid } = req.params;
+
+    if (!userid) {
+        throw new ApiError(400, "User ID is required");
+    }
+
+    const comments = await Comment.find({
+        owner: userid
+    });
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, comments, "User comments fetched successfully"));
+});
