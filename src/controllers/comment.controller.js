@@ -108,19 +108,21 @@ const deletecomment = async_handler(async (req, res) => {
         .json(new ApiResponse(200, comment, "Comment deleted successfully"));
 });
 
-const getusercomments = async_handler(async (req, res) => {
+const getvideocomments = async_handler(async (req, res) => {
 
-    const { userid } = req.params;
+    const { videoid } = req.params;
 
-    if (!userid) {
-        throw new ApiError(400, "User ID is required");
+    if (!videoid) {
+        throw new ApiError(400, "video not found");
     }
 
     const comments = await Comment.find({
-        owner: userid
+        video : videoid
     });
 
     return res
         .status(200)
-        .json(new ApiResponse(200, comments, "User comments fetched successfully"));
+        .json(new ApiResponse(200, comments, "video comments fetched successfully"));
 });
+
+export {createcomment,updatecomment,deletecomment,getvideocomments}
