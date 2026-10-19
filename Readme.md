@@ -1,8 +1,77 @@
-# Backend Project 
+# Nexus
 
-Summary of this project
+Video streaming backend built with Node.js, Express and MongoDB.
 
-This project is a complex backend project that is built with nodejs, expressjs, mongodb, mongoose, jwt, bcrypt, and many more. This project is a complete backend project that has all the features that a backend project should have. We are building a complete video hosting website similar to youtube with all the features like login, signup, upload video, like, dislike, comment, reply, subscribe, unsubscribe, and many more.
+API covering authentication, video uploads and social features, built to understand how a production-style backend works end to end.
 
-Project uses all standard practices like JWT, bcrypt, access tokens, refresh Tokens and many more. 
-I worked through authentication, refresh tokens, file uploads, MongoDB relationships, aggregation pipelines.
+## Features
+
+## Features
+
+- **Authentication:** signup and login with JWT access and refresh tokens, bcrypt password hashing
+- **Videos:** file upload with Multer, media storage on Cloudinary
+- **Engagement:** likes, dislikes, comments and replies
+- **Tweets:** short text posts that users can create, update and delete
+- **Subscriptions:** subscribe and unsubscribe to channels, with subscriber and subscription counts
+- **Playlists:** create and manage playlists of videos
+- **Watch history:** tracks each user's watched videos
+- **Data layer:** MongoDB relationships with Mongoose, aggregation pipelines and paginated aggregation queries
+
+## Tech Stack
+
+- **Backend:** Node.js, Express 5
+- **Database:** MongoDB, Mongoose
+- **Auth:** JWT, bcrypt
+- **Storage:** Multer, Cloudinary
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js
+- A MongoDB database (local or Atlas)
+- A Cloudinary account
+
+### Installation
+
+```bash
+git clone https://github.com/<your-username>/Nexus.git
+cd Nexus
+npm install
+```
+
+### Environment Variables
+
+Create a `.env` file in the project root (see `.env.example`):
+
+```env
+PORT=8000
+MONGODB_URI=
+CORS_ORIGIN=*
+ACCESS_TOKEN_SECRET=
+ACCESS_TOKEN_EXPIRY=
+REFRESH_TOKEN_SECRET=
+REFRESH_TOKEN_EXPIRY=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+```
+
+### Run
+
+```bash
+npm run dev
+```
+
+## API Overview
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/v1/users/register` | Create an account |
+| POST | `/api/v1/users/login` | Log in |
+| ... | ... | ... |
+
+## Roadmap
+
+- [ ] Deploy with Docker, Nginx and HTTPS
+- [ ] CI/CD pipeline
