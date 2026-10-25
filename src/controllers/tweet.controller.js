@@ -104,7 +104,7 @@ const getusertweet = async_handler(async(req,res) =>{
     
         if (!userid)
         {
-            throw ApiError(404,"user not found")
+            throw new ApiError(404,"user not found")
         }
     
         const listtweets = await Tweet.find({
@@ -113,7 +113,7 @@ const getusertweet = async_handler(async(req,res) =>{
     
         if (listtweets.length === 0)
         {
-            throw ApiError(404,"user has no tweets")
+            throw new ApiError(404,"user has no tweets")
         }
     
         return res.status(200).json(
