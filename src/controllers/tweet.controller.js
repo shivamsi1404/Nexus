@@ -37,8 +37,10 @@ const updatetweet = async_handler(async(req,res) =>{
     const { content } = req.body;
     const { tweetid } = req.params;
 
+    console.log(tweetid)
+
     if (!content || !content.trim()) {
-        throw ApiError(400, "Tweet content is required");
+        throw new ApiError(400, "Tweet content is required");
     }
 
     const tweet = await Tweet.findOneAndUpdate(
@@ -58,7 +60,7 @@ const updatetweet = async_handler(async(req,res) =>{
     );
 
     if (!tweet) {
-        throw ApiError(404, "Tweet not found or unauthorized");
+        throw new ApiError(404, "Tweet not found or unauthorized");
     }
 
     return res.status(200).json(
