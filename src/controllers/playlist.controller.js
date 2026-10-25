@@ -1,6 +1,6 @@
-import { async_handler } from "../utils/asynchandler";
-import { Playlist } from "../models/playlist.model";
-import { ApiError } from "../utils/apierror";
+import { async_handler } from "../utils/asynchandler.js";
+import { Playlist } from "../models/playlist.model.js";
+import { ApiError } from "../utils/apierror.js";
 import { ApiResponse } from "../utils/apiresponse.js"
 
 const createplaylist = async_handler(async (req, res) => {

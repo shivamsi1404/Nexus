@@ -1,5 +1,5 @@
-import { async_handler } from "../utils/asynchandler";
-import { ApiError } from "../utils/apierror";
+import { async_handler } from "../utils/asynchandler.js";
+import { ApiError } from "../utils/apierror.js";
 import { ApiResponse } from "../utils/apiresponse.js"
 import { Tweet } from "../models/tweet.model.js";
 
