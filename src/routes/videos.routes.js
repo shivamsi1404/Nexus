@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { verifyJWT } from "../middlewares/auth.middleware";
-import { upload } from "../middlewares/multer.middleware";
-import { deletevideo, getallvideos, getvideobyid, publicstatus, updatethumbnail, updatevideodetails, uploadvideo } from "../controllers/video.controller";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
+import { upload } from "../middlewares/multer.middleware.js";
+import { deletevideo, getallvideos, getvideobyid, publicstatus, updatethumbnail, updatevideodetails, uploadvideo } from "../controllers/video.controller.js";
 
 const router = Router();
 
