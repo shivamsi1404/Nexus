@@ -38,7 +38,7 @@ const uploadvideo = async_handler(async (req, res) => {
     }
 
     const postvideo = await video.create({
-        videofile: cloudvideo.url,
+        videoFile: cloudvideo.url,
         thumbnailfile: cloudthumbnail.url,
         title: usertitle,
         description: userdescription,
