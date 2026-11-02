@@ -22,7 +22,8 @@ router.route("/uploadvideo").post(
 
 router.route("/getvideo/:videoid").get(getvideobyid);
 router.route("/updatedetails/:videoid").patch(updatevideodetails);
-router.route("/updatethumbnail/:videoid").patch(updatethumbnail);
+router.route("/updatethumbnail/:videoid").patch(
+    upload.single("thumbnail"),updatethumbnail);
 router.route("/deletevideo/:videoid").patch(deletevideo);
 router.route("/publicstatus/:videoid").get(publicstatus);
 router.route("/getallvideos/:videoid").get(getallvideos);
