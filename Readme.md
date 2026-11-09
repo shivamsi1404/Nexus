@@ -75,3 +75,6 @@ npm run dev
 
 - [ ] Deploy with Docker, Nginx and HTTPS
 - [ ] CI/CD pipeline
+- [ ] Feed Creation 
+- [ ] UI 
+- [ ] Dashboard
