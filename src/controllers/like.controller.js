@@ -125,7 +125,8 @@ const getalllikedvideo = async_handler(async (req,res) => {
     const likedvideo = await Like.aggregate([
         {
             $match:{
-                likedBy : req.user._id
+                likedBy : req.user._id,
+                video: { $exists: true }
             }
             //This code filters the Like collection to retrieve all like documents where likedBy matches the logged-in user's ID (req.user._id).
         },
@@ -138,11 +139,6 @@ const getalllikedvideo = async_handler(async (req,res) => {
             }
         }
     ])
-
-    if (likedvideo.length === 0)
-    {
-        throw ApiError(400,"no video liked by user")
-    }
 
     return res.status(200)
     .json(
