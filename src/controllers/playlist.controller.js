@@ -132,7 +132,7 @@ const getallplaylistofuser = async_handler(async (req, res) => {
 
     return res.status(200).json(
         new ApiResponse(
-            200,listplaylistplaylist,"playlist updated"
+            200,listplaylist,"playlist updated"
         )
     )
 

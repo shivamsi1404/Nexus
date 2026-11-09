@@ -11,14 +11,14 @@ router.use(verifyJWT); // Apply verifyJWT middleware to all routes in this file
 router.route("/").post(createplaylist)
 
 router
-    .route("/:playlistId")
+    .route("/:playlistid")
     .get(playlistbyid)
     .patch(updateplaylist)
     .delete(deleteplaylist);
 
-router.route("/add/:videoId/:playlistId").patch(addvideotoplaylist);
-router.route("/remove/:videoId/:playlistId").patch(removevideofromplaylist);
+router.route("/add/:videoid/:playlistid").patch(addvideotoplaylist);
+router.route("/remove/:videoid/:playlistid").patch(removevideofromplaylist);
 
-router.route("/user/:userId").get(getallplaylistofuser);
+router.route("/user/:userid").get(getallplaylistofuser);
 
 export default router
